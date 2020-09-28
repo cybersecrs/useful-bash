@@ -6,7 +6,7 @@
 #                                                                                #
 #   *******************                                                          #
 #   *                 *                                                          #
-#   *   [SYS] Stats   *  ln -s /path/to/proclist.sh /bin/proclist                #
+#   *   [proc] List   *  ln -s /path/to/proclist.sh /bin/proclist                #
 #   *                 *                                                          #
 #   *******************                                                          #
 #                                                                                #
