@@ -1,0 +1,78 @@
+#!/bin/bash
+
+###### Check Root User
+
+    if [ $(id -u) != "0" ]; then
+      echo -e "$W"" You must have root access to run this script!\n"$RS" "
+      sleep 1
+      exit
+    fi
+
+
+###### Banner
+
+    echo -e "----------------------------------"
+    echo -e "         Live USB Script"
+    echo -e "----------------------------------"
+
+
+###### Define Functions
+
+    function list_usb_devices() {
+      lsblk -l | grep sd
+}
+
+    function clean_usb() {
+      sudo dd if=/dev/zero of=$DEV bs=8M status=progress && sync
+}
+
+    function write_usb() {
+      sudo dd if=$NAME of=$DEV bs=8M status=progress && sync
+}
+
+###### Define Working Directory
+
+    DIR=~/Downloads
+    cd "$DIR"
+
+
+###### Start Script
+
+    echo -e "Please find USB device name (example: /dev/sdb)"
+      list_usb_devices
+
+    echo -e -n "Please enter USB device name: "
+      read DEV
+
+    clear && sleep 1
+
+    echo -e "Your USB device name is: "$DEV" "
+    echo -e "Your Folder Root Is: "$DIR" "
+
+    echo -e -n "Enter a name of file to write: "
+      read NAME
+
+    echo -e -n "Do you want to fill USB with zero? (y/n): "
+      read ANSWZERO
+
+        if [ "$ANSWZERO" == "y" ] || [ "$ANSWZERO" == "Y" ]; then
+
+          echo -e -n "Do you want to write USB after zero-ing? (y/n): "
+            read AFTZERO
+
+          if [ "$AFTZERO" == "y" ] || [ "$AFTZERO" == "Y" ]; then
+            clean_usb;
+            write_usb && echo -e "Process Finished!"
+          else
+            clean_usb && echo -e "Process Finished!"
+          fi
+
+        else
+
+          echo -e -n "Do you want to write file to USB? (y/n): "
+            read WRITE
+
+          if [ "$WRITE" == "y" ] || [ "$WRITE" == "Y" ]; then
+            write_usb && echo -e "Process Finished!"
+          fi
+        fi
